@@ -1,0 +1,70 @@
+#datepicker1 {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+}
+
+#datepicker2 {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+}
+
+.title-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 280px;
+}
+.title-row-button-backward {
+    width: 40px;
+    text-align: center;
+}
+.title-row-button-backward:hover {
+    background-color: lightblue;
+    cursor: pointer;
+}
+.title-row-button-forward {
+    width: 40px;
+    text-align: center;
+}
+.title-row-button-forward:hover {
+    background-color: lightblue;
+    cursor: pointer;
+}
+
+.week-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 280px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.week-row-day {
+    width: 40px;
+    text-align: center;
+}
+
+.week {
+    display: flex;
+    flex-direction: row;
+    width: 280px;
+}
+
+.week-day {
+    width: 40px;
+    text-align: center;
+}
+
+.week-day:hover {
+    background-color: lightblue;
+    cursor: pointer;
+}
+
+.week-day-none {
+    width: 40px;
+    text-align: center;
+    color: rgb(160, 160, 160);
+}
