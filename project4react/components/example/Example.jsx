@@ -77,7 +77,7 @@ class Example extends React.Component {
   }
 
   handleMottoChange(event) {
-      this.setState({motto: event.target.value})
+      this.setState({motto: event.target.value});
   }
 
   /* eslint-disable-next-line class-methods-use-this */
@@ -119,9 +119,9 @@ class Example extends React.Component {
                 </p>
             </div>
             <div className="cs142-example-project">
-                <label htmlFor="inId">Input Field:
+                <label htmlFor="inId2">Input Field:
                 </label>
-                <input type="text" value={this.state.motto} onChange={e => this.handleMottoChange(e)} />
+                <input id="inId2" type="text" value={this.state.motto} onChange={e => this.handleMottoChange(e)} />
             </div>
         </div>
         </div>
