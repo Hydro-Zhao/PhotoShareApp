@@ -23,6 +23,7 @@ class Example extends React.Component {
     // We read the example model data into the state variable 'name'
     this.state = {
       name: window.cs142models.exampleModel().name,
+      motto: window.cs142models.exampleModel().motto,
       counter: 0,
       inputValue: '',
       buttonWasClicked: '',
@@ -75,6 +76,10 @@ class Example extends React.Component {
     this.setState({ buttonWasClicked: buttonName });
   }
 
+  handleMottoChange(event) {
+      this.setState({motto: event.target.value})
+  }
+
   /* eslint-disable-next-line class-methods-use-this */
   outOfBandJSX(option) {
     let optionJSX;
@@ -103,7 +108,22 @@ class Example extends React.Component {
         <h1>CS142 Project#4 React.js Example</h1>
 
         <div className="motto-update">
-          {/* Your problem #1 motto displaying and updating widget goes here */}
+        {/* Your problem #1 motto displaying and updating widget goes here */}
+        <div className="cs142-example-project">
+            <div className="cs142-example-project">
+                <p>
+                My name is &ldquo; {this.state.name} &rdquo;.
+                </p>
+                <p>
+                My motto is &ldquo; {this.state.motto} &rdquo;
+                </p>
+            </div>
+            <div className="cs142-example-project">
+                <label htmlFor="inId">Input Field:
+                </label>
+                <input type="text" value={this.state.motto} onChange={e => this.handleMottoChange(e)} />
+            </div>
+        </div>
         </div>
 
         <p>

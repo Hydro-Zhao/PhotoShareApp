@@ -32,3 +32,13 @@ you use won't conflict with these names.
 .cs142-code-name {
   font-family: Courier New, monospace;
 }
+
+.cs142-example-project {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px dashed #722b00;
+    display: inline-block;
+    box-sizing: border-box;
+}

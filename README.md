@@ -23,9 +23,7 @@ white-space: nowrap;
 CSS Flexbox layout
 ```
 
-### Project #2: JavaScript Calisthenics
-
-practice to write high order funciton
+### Project 2: JavaScript Calisthenics
 
 ```
 anonymous function
@@ -64,6 +62,9 @@ debuger;
 ```
 
 ###
+
+
+
 ###
 ###
 ###
