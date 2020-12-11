@@ -1,11 +1,11 @@
 [CS142: Web Applications (Spring 2020)](http://web.stanford.edu/class/cs142/)
 
 > http://web.stanford.edu/class/cs142/projects.html
->
-> https://github.com/DARRENSKY/Web-Applications
 
 ### Project 1: HTML and CSS1
 
+> https://github.com/DARRENSKY/Web-Applications
+>
 > https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 > 
 > https://www.w3schools.com/howto/howto_css_div_full_height.asp
