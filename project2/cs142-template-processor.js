@@ -9,3 +9,5 @@ Cs142TemplateProcessor.prototype.fillIn = function(dictionary) {
         return dictionary[p1] ? dictionary[p1] : "";
     });
 };
+
+export default Cs142TemplateProcessor;

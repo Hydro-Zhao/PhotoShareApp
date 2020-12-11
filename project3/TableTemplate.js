@@ -1,6 +1,6 @@
 'use strict';
 
-//import {Cs142TemplateProcessor} from '../project2/cs142-template-processor.js';
+import Cs142TemplateProcessor from '../project2/cs142-template-Cs142TemplateProcessor.js'
 
 class TableTemplate {
     static fillIn(id, dict, columnName) {

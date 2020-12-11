@@ -33,6 +33,8 @@ anonymous function
 
 TODO 测试中在一个datepicker div中是有两个日历，而我加的两个listener不是独立，点一个，另外一个也会变。（修复这个bug之后，render中清除datepicker child的操作也要变成针对特定的日历）
 
+TODO 似乎datepicker2的某些月份显示天数不够
+
 > https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction
 >
 > https://www.w3schools.com/jsref/coll_table_rows.asp
@@ -61,9 +63,11 @@ console.log
 debuger;
 ```
 
-###
+### Project 4: Page Generation with ReactJS
 
+TODO Problem3
 
+因为不理解React背后的行为，我在project4中button的逻辑部分卡了很久。我的想法就是设置一个叫example的布尔值，来决定显示哪个。但是这会导致`Maximum Update Depth Exceeded`，我主要参考了这两个地方来解决问题[React Js, Maximum Update Depth Exceeded](https://stackanswers.net/questions/react-js-maximum-update-depth-exceeded)，[React - uncaught TypeError: Cannot read property 'setState' of undefined](https://stackoverflow.com/questions/32317154/react-uncaught-typeerror-cannot-read-property-setstate-of-undefined)。按照前面一个的方法去掉括号，在按照后一个的方法bind最后就解决了问题。但是我任然不知道问题出在哪，是因为setState的异步吗？为什么event handler不加括号就要bind？**同样的代码，为什么加了括号直接调用就是错的**？为什么problem1和2不用去掉括号，不用bind，但是同样用到setState就能够成功？**（其实这些正是problem1中example.jsx介绍的handleChangeBound和handleButtonClick()的区别，虽然实验指导和代码注释里面解释了很多，但是我看不懂。**）
 
 ###
 ###

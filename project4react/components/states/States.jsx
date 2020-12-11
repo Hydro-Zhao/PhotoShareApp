@@ -11,17 +11,10 @@ class States extends React.Component {
     super(props);
     //console.log('window.cs142models.statesModel()', window.cs142models.statesModel());
 
-    // Components have a special property named "state" that holds state.
     this.state = {
         states: window.cs142models.statesModel().sort(),
         searchText: ''
     };
-
-    for (let i=0;i<this.state.states.length;i++) {
-        if (this.state.states[i].toLowerCase().includes('al')) {
-            console.log(this.state.states[i]);
-        }
-    }
 
   }
 
