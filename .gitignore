@@ -90,5 +90,5 @@ Thumbs.db
 
 
 package-lock.json
-compiled/
-!compiled/.allowEmptyGitRepoDirectory
+*/compiled/*
+!*/compiled/.allowEmptyGitRepoDirectory

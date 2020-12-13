@@ -2,7 +2,7 @@
 
 > http://web.stanford.edu/class/cs142/projects.html
 >
-> https://github.com/kkailiwang/cs142-projects/blob/master/project5/components/topBar/TopBar.jsx
+> https://github.com/kkailiwang/cs142-projects
 
 TODO Project4 Problem3
 
