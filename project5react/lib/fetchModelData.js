@@ -1,4 +1,4 @@
-var Promise = require("Promise");
+//var Promise = require("Promise");
 
 /**
   * FetchModel - Fetch a model from the web server.
@@ -17,10 +17,22 @@ var Promise = require("Promise");
 
 function fetchModel(url) {
   return new Promise(function(resolve, reject) {
-      console.log(url);
-      setTimeout(() => reject({status: 501, statusText: "Not Implemented"}),0);
+      //console.log(url);
+      //setTimeout(() => reject({status: 501, statusText: "Not Implemented"}),0);
       // On Success return:
       // resolve({data: getResponseObject});
+      let xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function(){
+        if(this.readyState === 4) {
+          if (this.status === 200) {
+            resolve({data:JSON.parse(this.responseText)});
+          } else {
+            reject({status: xhr.status, statusText:xhr.statusText});
+          }
+        }
+      }
+      xhr.open("GET", url)
+      xhr.send();
   });
 }
 

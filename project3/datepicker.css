@@ -16,19 +16,35 @@
     justify-content: center;
     width: 280px;
 }
-.title-row-button-backward {
+.datepicker1-title-row-button-backward {
     width: 40px;
     text-align: center;
 }
-.title-row-button-backward:hover {
+.datepicker1-title-row-button-backward:hover {
     background-color: lightblue;
     cursor: pointer;
 }
-.title-row-button-forward {
+.datepicker1-title-row-button-forward {
     width: 40px;
     text-align: center;
 }
-.title-row-button-forward:hover {
+.datepicker1-title-row-button-forward:hover {
+    background-color: lightblue;
+    cursor: pointer;
+}
+.datepicker2-title-row-button-backward {
+    width: 40px;
+    text-align: center;
+}
+.datepicker2-title-row-button-backward:hover {
+    background-color: lightblue;
+    cursor: pointer;
+}
+.datepicker2-title-row-button-forward {
+    width: 40px;
+    text-align: center;
+}
+.datepicker2-title-row-button-forward:hover {
     background-color: lightblue;
     cursor: pointer;
 }
@@ -53,7 +69,11 @@
     width: 280px;
 }
 
-.week-day {
+.datepicker1-week-day {
+    width: 40px;
+    text-align: center;
+}
+.datepicker2-week-day {
     width: 40px;
     text-align: center;
 }

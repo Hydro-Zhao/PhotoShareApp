@@ -57,10 +57,10 @@ DatePicker.prototype.render = function (date) {
         }
 
         csElement(datepicker, "div", "class", "title-row");
-        csElement(datepicker.lastElementChild, "div", "class", "title-row-button-backward", "<");
+        csElement(datepicker.lastElementChild, "div", "class", _this.id + "-title-row-button-backward", "<");
         let stringDate = _this.date.toDateString().split(" ");
         csElement(datepicker.lastElementChild, "div", "class", "title-row-title", stringDate[1] + " " + stringDate[3]);
-        csElement(datepicker.lastElementChild, "div", "class", "title-row-button-forward", ">");
+        csElement(datepicker.lastElementChild, "div", "class", _this.id + "-title-row-button-forward", ">");
 
         csElement(datepicker, "div", "class", "week-row");
         let week = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
@@ -75,7 +75,7 @@ DatePicker.prototype.render = function (date) {
                 csElement(tmpElementWeek, "div", "class", "week-day-none", parseInt(preLastDate - (preNumDay - i) + 1));
             }
             for (let i = currentFirstDay; i < 7; i++) {
-                csElement(tmpElementWeek, "div", "class", "week-day", parseInt(currentFirstDate++));
+                csElement(tmpElementWeek, "div", "class", _this.id + "-week-day", parseInt(currentFirstDate++));
             }
             datepicker.appendChild(tmpElementWeek);
         }
@@ -83,7 +83,7 @@ DatePicker.prototype.render = function (date) {
             let tmpElementWeek = document.createElement("div");
             tmpElementWeek.setAttribute("class", "week");
             for (let i = 0; i < 7; i++) {
-                csElement(tmpElementWeek, "div", "class", "week-day", parseInt(currentFirstDate++));
+                csElement(tmpElementWeek, "div", "class", _this.id + "-week-day", parseInt(currentFirstDate++));
             }
             datepicker.appendChild(tmpElementWeek);
         }
@@ -91,7 +91,7 @@ DatePicker.prototype.render = function (date) {
             let tmpElementWeek = document.createElement("div");
             tmpElementWeek.setAttribute("class", "week");
             for (let i = 0; i < 7 - nextNumDay; i++) {
-                csElement(tmpElementWeek, "div", "class", "week-day", parseInt(currentFirstDate++));
+                csElement(tmpElementWeek, "div", "class", _this.id +"-week-day", parseInt(currentFirstDate++));
             }
             for (let i = 7 - nextNumDay; i < 7; i++) {
                 csElement(tmpElementWeek, "div", "class", "week-day-none", parseInt(nextFirstDate++));
@@ -102,13 +102,13 @@ DatePicker.prototype.render = function (date) {
     }
     function addButtonEventListener(_this) {
         let button;
-        button = document.getElementsByClassName("title-row-button-backward");
+        button = document.getElementsByClassName(_this.id + "-title-row-button-backward");
         for (let i = 0; i < button.length; i++) {
             button[i].addEventListener("click", function () {
                 _this.render(new Date(_this.date.getFullYear(), _this.date.getMonth() - 1, 1));
             });
         }
-        button = document.getElementsByClassName("title-row-button-forward");
+        button = document.getElementsByClassName(_this.id + "-title-row-button-forward");
         for (let i = 0; i < button.length; i++) {
             button[i].addEventListener("click", function () {
                 _this.render(new Date(_this.date.getFullYear(), _this.date.getMonth() + 1, 1));
@@ -116,7 +116,7 @@ DatePicker.prototype.render = function (date) {
         }
     }
     function addDayEventListener(_this) {
-        let day = document.getElementsByClassName("week-day");
+        let day = document.getElementsByClassName(_this.id + "-week-day");
         for (let i = 0; i < day.length; i++) {
             let stringDate = _this.date.toDateString().split(" ");
             day[i].addEventListener("click", function () {
