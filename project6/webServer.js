@@ -130,7 +130,33 @@ app.get('/test/:p1', function (request, response) {
  * URL /user/list - Return all the User object.
  */
 app.get('/user/list', function (request, response) {
-    response.status(200).send(cs142models.userListModel());
+    User.find({}, function (err, userList) {
+        if (err) {
+            console.error('Doing /user/list error:', err);
+            response.status(500).send(JSON.stringify(err));
+            return;
+        }
+        if (userList.length === 0) {
+            response.status(500).send('Missing UserList');
+            return;
+        }
+
+        userList = JSON.parse(JSON.stringify(userList));
+        async.each(userList, function(user, callback){
+            delete user.location;
+            delete user.description;
+            delete user.occupation;
+            delete user.__v;
+            callback(err);
+        }, function(err) {
+            if (err) {
+                console.log("UserList async error ", err);
+            } else {
+                //console.log('UserList', userList);
+                response.status(200).send(userList);
+            }
+        });
+    });
 });
 
 /*
@@ -138,13 +164,22 @@ app.get('/user/list', function (request, response) {
  */
 app.get('/user/:id', function (request, response) {
     var id = request.params.id;
-    var user = cs142models.userModel(id);
-    if (user === null) {
-        console.log('User with _id:' + id + ' not found.');
-        response.status(400).send('Not found');
-        return;
-    }
-    response.status(200).send(user);
+    User.findOne({_id: id}, function (err, user) {
+        if (err) {
+            console.error('Doing /user/:id error:', err);
+            response.status(400).send(JSON.stringify(err));
+            return;
+        }
+        if (Object.entries(user).length === 0) {
+            response.status(400).send('Missing User');
+            return;
+        }
+
+        user = JSON.parse(JSON.stringify(user));
+        delete user.__v;
+        //console.log('User', user);
+        response.status(200).send(JSON.stringify(user));
+    });
 });
 
 /*
@@ -152,13 +187,51 @@ app.get('/user/:id', function (request, response) {
  */
 app.get('/photosOfUser/:id', function (request, response) {
     var id = request.params.id;
-    var photos = cs142models.photoOfUserModel(id);
-    if (photos.length === 0) {
-        console.log('Photos for user with _id:' + id + ' not found.');
-        response.status(400).send('Not found');
-        return;
-    }
-    response.status(200).send(photos);
+    Photo.find({user_id: id}, function (err, photos) {
+        if (err) {
+            console.error('Doing /photoOfUser/:id error:', err);
+            response.status(400).send(JSON.stringify(err));
+            return;
+        }
+        if (photos.length === 0) {
+            response.status(400).send('Missing PhotoOfUser');
+            return;
+        }
+        photos = JSON.parse(JSON.stringify(photos));
+        async.each(photos, function(photo, callback){
+            delete photo.__v;
+            async.each(photo.comments, function(comment, callback){
+                User.findOne({_id:comment.user_id}, function(err, user ){
+                    if (err) {
+                        console.log("error in photos=>user");
+                    } else {
+                        delete user.__v;
+                        delete user.location;
+                        delete user.description;
+                        delete user.occupation;
+                        delete comment.user_id;
+                        comment.user = user;
+                        console.log("[Comment]", comment)
+                        console.log("[User]", user)
+                    }
+                })
+                callback(err);
+            }, function(err){
+                if(err) {
+                    console.log("error in photos=>user");
+                }
+            });
+            console.log("[Photo]", photo);
+            callback(err);
+        }, function(err) {
+            if (err) {
+                console.log("UserList async error ", err);
+            } else {
+                //console.log('[Photos]', photos);
+                response.status(200).send(JSON.stringify(photos));
+            }
+        });
+    });
 });
 
 

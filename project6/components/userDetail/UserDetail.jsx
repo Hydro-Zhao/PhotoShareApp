@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import './UserDetail.css';
 import { Link } from "react-router-dom";
-import fetchModel from "../../lib/fetchModelData";
+import axios from 'axios';
 
 
 /**
@@ -27,7 +27,7 @@ class UserDetail extends React.Component {
         user: undefined,    
     };
 
-    fetchModel('http://localhost:3000/user/'+this.props.match.params.userId).then(response => {
+    axios('http://localhost:3000/user/'+this.props.match.params.userId).then(response => {
         this.setState({user: response.data});
         this.props.changeView(response.data.first_name + " "+response.data.last_name);
     });
@@ -36,7 +36,7 @@ class UserDetail extends React.Component {
 
   componentDidUpdate = () => {
     if (this.state.user._id !== this.props.match.params.userId) {
-      fetchModel('http://localhost:3000/user/'+this.props.match.params.userId).then(response => {
+      axios('http://localhost:3000/user/'+this.props.match.params.userId).then(response => {
           this.setState({user: response.data});
           this.props.changeView(response.data.first_name + " "+response.data.last_name);
       });
