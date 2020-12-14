@@ -47,6 +47,8 @@ var app = express();
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var multer = require('multer');
+var processFormBody = multer({storage: multer.memoryStorage()}).single('uploadedphoto');
+var fs = require("fs");
 
 // XXX - Your submission should work without this line. Comment out or delete this line for tests and before submission!
 //var cs142models = require('./modelData/photoApp.js').cs142models;
@@ -137,6 +139,10 @@ app.get('/test/:p1', function (request, response) {
  * URL /user/list - Return all the User object.
  */
 app.get('/user/list', function (request, response) {
+    if (request.session.user_id === undefined || request.session.user_id === null) {
+        response.status(401).send("user is not logged in");
+        return;
+    }
     User.find({}, "id first_name last_name", function (err, userList) {
         if (err) {
             console.error('Doing /user/list error:', err);
@@ -156,6 +162,10 @@ app.get('/user/list', function (request, response) {
  * URL /user/:id - Return the information for User (id)
  */
 app.get('/user/:id', function (request, response) {
+    if (request.session.user_id === undefined || request.session.user_id === null) {
+        response.status(401).send("user is not logged in");
+        return;
+    }
     var id = request.params.id;
     User.findOne({_id: id}, "id first_name last_name location description occupation", function (err, user) {
         if (err) {
@@ -177,6 +187,10 @@ app.get('/user/:id', function (request, response) {
  * URL /photosOfUser/:id - Return the Photos for User (id)
  */
 app.get('/photosOfUser/:id', function (request, response) {
+    if (request.session.user_id === undefined || request.session.user_id === null) {
+        response.status(401).send("user is not logged in");
+        return;
+    }
     var id = request.params.id;
     Photo.find({user_id: id}, "_id user_id comments file_name date_time", function (err, photos) {
         if (err) {
@@ -215,23 +229,104 @@ app.get('/photosOfUser/:id', function (request, response) {
 });
 
 app.post('/admin/login', function (request, response) {
-    var id = request.params.id;
     var login_name = request.body.login_name;
-    User.findOne({_id: id}, function (err, user) {
+    User.find({login_name: login_name}, function (err, info) {
         if (err) {
-            console.error('Doing /user/:id error:', err);
+            console.error('Doing /admin/login error:', err);
             response.status(400).send(JSON.stringify(err));
             return;
         }
-        if (Object.entries(user).length === 0) {
-            response.status(400).send('Missing User');
+        if ( info === undefine||dinfo === null ) {
+            response.status(400).send('Wrong login name');
             return;
         }
+        request.session.user_id = info._id;
+        response.status(200).send({_id: info.id});
+    });
+});
 
-        user = JSON.parse(JSON.stringify(user));
-        delete user.__v;
-        //console.log('User', user);
-        response.status(200).send(JSON.stringify(user));
+app.post('/admin/logout', function (request, response) {
+    if (request.session.user_id === undefined || request.session.user_id === null) {
+        response.status(400).send('user is not currently logged in');
+    } else {
+        request.session.destroy(function(err){console.log("log out")});
+    }
+});
+
+app.post('/commentOfPhoto/:photo_id', function (request, response) {
+    if (request.session.user_id === undefined || request.session.user_id === null) {
+        response.status(401).send('user is not currently logged in');
+    } else if(request.body.comment === undefined||request.body.comment === null) {
+        response.status(400).send('comment is null');
+    }
+
+    var date = new Date().toISOString();
+    var newComment = {
+        comment: request.body.comment,
+        user_id: request.session.user_id,
+        date_time: date,
+    };
+
+    Photo.findById(request.params.photo_id, function(err, photo) {
+        if (err) {
+            console.error('Doing /photoOfUser/:id error:', err);
+            response.status(400).send(JSON.stringify(err));
+            return;
+        }
+        if (photos.length === 0) {
+            response.status(400).send('Missing PhotoOfUser');
+            return;
+        }
+        photo.comments.push(newComment);
+        Photo.findByIdAndUpdate(request.params.photo_id, {comments: photo.comments});
+    });
+});
+
+app.post('/photo/new', function (request, response) {
+    if (request.session.user_id === undefined || request.session.user_id === null) {
+        response.status(401).send('user is not currently logged in');
+    }
+
+    processFormBody(request, response, function (err) {
+        if (err || !request.file) {
+            // XXX - Insert error handling code here.
+            response.status(400).send('no file uploaded');
+            return;
+        }
+        // request.file has the following properties of interest
+        // fieldname - Should be 'uploadedphoto' since that is what we sent
+        // originalname: - The name of the file the user uploaded
+        // mimetype: - The mimetype of the image (e.g. 'image/jpeg', 'image/png')
+        // buffer: - A node Buffer containing the contents of the file
+        // size: - The size of the file in bytes
+
+        // XXX - Do some validation here.
+        // We need to create the file in the directory "images" under an unique name. We make
+        // the original file name unique by adding a unique prefix with a timestamp.
+        var timestamp = new Date().valueOf();
+        var filename = 'U' + String(timestamp) + request.file.originalname;
+        fs.writeFile("./images/" + filename, request.file.buffer, function (err) {
+            // XXX - Once you have the file written into your images directory under the name
+            // filename you can create the Photo object in the database
+            if (err) {
+                response.status(400).send('writ file error');
+                return ;
+            }
+            var date_time = new Date().toISOString();
+            var photo = {
+                user_id: request.session.user_id,
+                file_name: filename,
+                date_time: date_time,
+                comments: [],
+            }
+            Photo.create(photo, function(err) {
+                if (err) {
+                    response.status(400).send('writ file info to database error');
+                    return;
+                }
+                response.status(200).send({user_id: request.session.user_id});
+            });
+        });
     });
 });
 

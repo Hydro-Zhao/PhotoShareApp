@@ -8,8 +8,14 @@ TODO Project4 Problem3
 
 TODO Project5 Extra Credit
 
-TODO pass all the tests of Project6
+TODO Project6 test
 
 TODO Project6 Extra Credit 
 
+TODO Project7 uint test and function test
+
+TODO Project7 Problem4
+
 TODO Project7 Extra Credit 
+
+TODO Project8
