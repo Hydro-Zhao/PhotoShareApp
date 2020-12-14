@@ -12,7 +12,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import { Link } from "react-router-dom";
-import fetchModel from "../../lib/fetchModelData";
+import axios from 'axios';
 
 
 /**
@@ -26,10 +26,10 @@ class UserPhotos extends React.Component {
         photos: undefined,
     };
 
-    fetchModel('http://localhost:3000/photosOfUser/'+this.props.match.params.userId).then(response => {
+    axios('http://localhost:3000/photosOfUser/'+this.props.match.params.userId).then(response => {
         this.setState({photos: response.data});
     });
-    fetchModel('http://localhost:3000/user/'+this.props.match.params.userId).then(response => {
+    axios('http://localhost:3000/user/'+this.props.match.params.userId).then(response => {
         this.props.changeView("Photo of " + response.data.first_name + " "+response.data.last_name);
     });
   }

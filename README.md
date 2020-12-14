@@ -10,4 +10,4 @@ TODO Project5 extra credit
 
 TODO Project6 Extra Credit 
 
-TODO Project6 problem1 photoofuser,??? problem2 photo axios
+TODO Project6 problem1 photOfUser一直出问题，主要就是中间修改的对最后没有影响（不熟悉js的semantic），虽然功能看起来没有问题，但是测试没有通过

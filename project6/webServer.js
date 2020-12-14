@@ -45,7 +45,7 @@ var express = require('express');
 var app = express();
 
 // XXX - Your submission should work without this line. Comment out or delete this line for tests and before submission!
-var cs142models = require('./modelData/photoApp.js').cs142models;
+//var cs142models = require('./modelData/photoApp.js').cs142models;
 
 mongoose.connect('mongodb://localhost/cs142project6', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -187,6 +187,7 @@ app.get('/user/:id', function (request, response) {
  */
 app.get('/photosOfUser/:id', function (request, response) {
     var id = request.params.id;
+    /*
     Photo.find({user_id: id}, function (err, photos) {
         if (err) {
             console.error('Doing /photoOfUser/:id error:', err);
@@ -198,40 +199,91 @@ app.get('/photosOfUser/:id', function (request, response) {
             return;
         }
         photos = JSON.parse(JSON.stringify(photos));
-        async.each(photos, function(photo, callback){
+        async.forEachOf(photos, function(photo,i, callback){
             delete photo.__v;
-            async.each(photo.comments, function(comment, callback){
-                User.findOne({_id:comment.user_id}, function(err, user ){
+            async.forEachOf(photo.comments, function(comment,j, callback){
+                let user = User.findOne({_id:comment.user_id}, function(err){
                     if (err) {
                         console.log("error in photos=>user");
-                    } else {
-                        delete user.__v;
-                        delete user.location;
-                        delete user.description;
-                        delete user.occupation;
-                        delete comment.user_id;
-                        comment.user = user;
-                        console.log("[Comment]", comment)
-                        console.log("[User]", user)
                     }
-                })
+                });
+                user.then((user) => {
+                    photo.comments[j] = {
+                        comment: comment.comment,
+                        date_time: comment.date_time,
+                        _id: comment._id,
+                        user: {
+                            _id:user._id, 
+                            fist_name:user.first_name, 
+                            last_name:user.last_name
+                        }
+                    }
+                    console.log(photo.comments[j]);
+                });
                 callback(err);
             }, function(err){
                 if(err) {
                     console.log("error in photos=>user");
                 }
+                photos[i] = photo;
+                //console.log("[Photo]", photos[i]);
             });
-            console.log("[Photo]", photo);
             callback(err);
         }, function(err) {
             if (err) {
                 console.log("UserList async error ", err);
             } else {
                 //console.log('[Photos]', photos);
-                response.status(200).send(JSON.stringify(photos));
+                response.status(200).send(photos);
             }
         });
     });
+    */
+
+    // https://github.com/kkailiwang/cs142-projects/blob/master/project6/webServer.js
+    Photo.find({user_id: id}, (err, photos) => {
+        if (err) {
+            console.log('Photos for user with _id:' + id + ' not found.');
+            response.status(400).send('Not found');
+            return;
+        }
+        let newPhotos = JSON.parse(JSON.stringify(photos));
+        async.eachOf(newPhotos, function(photo, i, callback) {
+            delete photo.__v;
+            async.eachOf(photo.comments, function(com, i, callback2) {
+                let the_user = User.findOne({_id: com.user_id}, (err) => {
+                    if (err) {
+                        response.status(400).send('Not found');
+                    }
+                });
+                the_user.then((user) => {
+                    let {_id, first_name, last_name} = user;
+                    photo.comments[i] = {
+                        comment: com.comment,
+                        date_time: com.date_time,
+                        _id: com._id,
+                        user: {
+                            _id: _id,
+                            first_name: first_name,
+                            last_name: last_name
+                        }
+                    }
+                    callback2();
+                });
+            }, (err) => {
+                if (err) {
+                    console.log('error occured');
+                } 
+                newPhotos[i] = photo;
+                callback();
+            })
+        }, function (err) {
+            if (!err) {
+                response.status(200).send(newPhotos);
+            }
+        });
+    });
+
 });
 
 
