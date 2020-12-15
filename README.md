@@ -19,3 +19,5 @@ TODO Project7 Extra Credit
 TODO Project8
 
 TODO lint, code style
+
+开始的时候写的JavaScript格式很混乱，对语言的特性也不太了解，有时间可以改一下。JavaScript可以参考[廖雪峰的JavaScript教程](https://www.liaoxuefeng.com/wiki/1022910821149312)。（包括let和var，arrow function和function以及this，call，apply的问题等）
